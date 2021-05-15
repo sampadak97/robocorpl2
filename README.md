@@ -9,6 +9,7 @@ This project serves following functionalities: <br>
   -> After completing this excel sheet of missed orders, robocorp assistant prompts to user if they want to reorder the missed once again?- there are 2 possible inputs: yes or no.<br>
   -> If user sends yes, the code runs only for those orders which were missed, if no is entered, browser closes and code exits. <br>
   -> The user prompt will loop if there are no records in missing order file, i.e. if that excel is empty. <br>
+  -> Find all outputs in 'outputs' folder. <br>
 To run the code: <br>
   -> Clone this repository in local. <br>
   -> Open VSCode (ensure that robocorp assistant and extensions are already installed) <br>
