@@ -20,6 +20,7 @@ Library           RPA.FileSystem
 Library           RPA.Dialogs
 Suite Teardown    Close All Browsers
 Library            RPA.Tasks
+Library            RPA.Word.Application
 
 *** Keywords ***
 Open The Intranet Website
@@ -27,14 +28,7 @@ Open The Intranet Website
     Open Available Browser     ${secret}[url]   
     Set Window Size    1000    1000
     Delete All Cookies
-Files to Table for missing orders
-    RPA.Excel.Files.Open Workbook     ${CURDIR}${/}output${/}missing_orders.xlsx
-    ${table}=    Read Worksheet As Table    header=True
-    Close Workbook
-    
-    FOR    ${row}    IN    @{table}
-        Fill Orders and preview    ${row}
-    END
+
 Click popup
     Click Button    xpath://*[@id="root"]/div/div[2]/div/div/div/div/div/button[2]
 Download The CSV file
@@ -97,25 +91,21 @@ Check missing orders
     FOR    ${row}    IN    @{table}
         ${find_missing_order}=    Does File Exist    ${CURDIR}${/}output${/}receipts&images${/}order_receipt${row}[Order number].pdf
         IF    ${find_missing_order} == False
-            #${missing_order}=    ${row}
             Append Rows To Worksheet    ${row}
         END
         Save Workbook  
     END
     
 Handle missing orders
-    Create Form    OOPS!Some orders didn't get placed
-    Add Text Input    Reorder missed orders?(yes/no)    answer
+    Create Form    OOPS!Some orders didn't get placed, check them out in "missing_orders.xlsx".
+    Add Text Input    Did you enjoyed this automation?(yes/no), please provide feedback for our services.    answer
     ${check}=    Set Variable    yes
     &{response}=    Request Response
-    ${proceed}=    Should Contain     ${response["answer"]}   ${check}    ignore_case=True
-    IF    ${proceed} == False
-       Close Browser
-    END
-Check missing file
-    ${find_missing_order_file}=    Does File Exist    ${CURDIR}${/}output${/}missing_orders.xlsx
-    Set next task if    ${find_missing_order_file} == True
-    ...    Working with missed orders
+    Create File    ${CURDIR}${/}output${/}feedback.txt    content=${response["answer"]}
+    
+      
+    
+
 *** Tasks ***
 Log into website and order robot
     Open The Intranet Website
@@ -123,19 +113,10 @@ Log into website and order robot
     Download The CSV file
     Files to Table
     Creating a ZIP archive
+    Close Browser
     Check missing orders
     Handle missing orders
-    Files to Table for missing orders
-    Check missing file
-    Close Browser
-Working with missed orders
-    Open The Intranet Website
-    Click popup
-    Files to Table for missing orders
-    Creating a ZIP archive
-    Handle missing orders
-    Check missing file
-    Close Browser
+    
     
    
     

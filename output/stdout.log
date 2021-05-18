@@ -2,8 +2,9 @@
 Tasks :: Orders robots from RobotSpareBin Industries Inc. Saves the order H...
 ==============================================================================
 #1   Log into website and order robot                                 | PASS |
-Transition: Set by keyword
 ------------------------------------------------------------------------------
-#2   Working with missed orders                                       | FAIL |
-'no' does not contain 'yes'
-------------------------------------------------------------------------------
+Tasks :: Orders robots from RobotSpareBin Industries Inc. Saves th... | PASS |
+1 task, 1 passed, 0 failed
+==============================================================================
+Output:  c:\Users\sampa\OneDrive\Desktop\invoke\robocorp\l2-bot\output\output.xml
+Log:     c:\Users\sampa\OneDrive\Desktop\invoke\robocorp\l2-bot\output\log.html
