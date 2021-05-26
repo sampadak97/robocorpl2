@@ -4,9 +4,8 @@ This project serves following functionalities: <br>
   -> Open orders url by fetching from Vault <br>
   -> Downloads orders.csv <br>
   -> Place orders provided in orders.csv and stores receipts in pdf as well as snapshot of bots ONLY when orders are succesfully placed. <br>
-  -> If some orders get error and cannot be placed, they get skipped and code still runs.<br>
-  -> After orders are completed, bot checks order receipt numbers(which are the order numbers in file) and creates an excel sheet which stores all missed orders.<br>
-  -> After completing this excel sheet of missed orders, robocorp assistant prompts to user if they enjoyed the order experience- there are 2 possible inputs: yes or no.<br>
+  -> If any order gets error and cannot be placed, it gets retried again and again until placed.<br>
+  -> After completing all orders, robocorp assistant prompts to user if they enjoyed the order experience.<br>
   -> Also, user can comment their feedback in the same prompt, this input will be stored in feedback.txt file.<br>
   -> Find all outputs in 'outputs' folder. <br>
 To run the code: <br>
