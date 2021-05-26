@@ -50,11 +50,14 @@ Fill Orders and preview
     Click Button    xpath://*[@id="preview"]
     Wait Until Element Is Visible    xpath://*[@id="order"]
     Click Button    xpath://*[@id="order"]
-    ${res}=    Is Element Visible    xpath://*[@id="order-completion"]    
-    IF    ${res} == True
+    ${res}=    Is Element Visible    xpath://*[@id="order-completion"]  
+    IF    ${res} == False
+        Reload Page
+        Click popup
+        Fill Orders and preview    ${row}
+    ELSE
         Save html to pdf    ${row}
-    END
-    
+    END  
 Save html to pdf
     [Arguments]    ${row}
     ${order_receipt_html}=    Get Element Attribute    xpath://*[@id="order-completion"]   outerHTML
@@ -79,33 +82,14 @@ Go back to order
     Click popup
 Creating a ZIP archive
    Archive Folder With Zip  ${CURDIR}${/}output${/}receipts&images  ${CURDIR}${/}output${/}receipts&images.zip    recursive=True
-Check missing orders
-    ${table}=    Read Table From Csv    orders.csv
-    RPA.FileSystem.Remove File    ${CURDIR}${/}output${/}missing_orders.xlsx
-    Create Workbook    ${CURDIR}${/}output${/}missing_orders.xlsx    
-    Set Worksheet Value    1    1    Order number
-    Set Worksheet Value    1    2    Head
-    Set Worksheet Value    1    3    Body
-    Set Worksheet Value    1    4    Legs
-    Set Worksheet Value    1    5    Address
-    FOR    ${row}    IN    @{table}
-        ${find_missing_order}=    Does File Exist    ${CURDIR}${/}output${/}receipts&images${/}order_receipt${row}[Order number].pdf
-        IF    ${find_missing_order} == False
-            Append Rows To Worksheet    ${row}
-        END
-        Save Workbook  
-    END
-    
-Handle missing orders
-    Create Form    OOPS!Some orders didn't get placed, check them out in "missing_orders.xlsx".
-    Add Text Input    Did you enjoyed this automation?(yes/no), please provide feedback for our services.    answer
+User prompt feedback
+    Create Form    Please provide feedback for our services.
+    Add Text Input    Did you enjoyed this automation?    answer
     ${check}=    Set Variable    yes
     &{response}=    Request Response
     Create File    ${CURDIR}${/}output${/}feedback.txt    content=${response["answer"]}
-    
-      
-    
 
+    
 *** Tasks ***
 Log into website and order robot
     Open The Intranet Website
@@ -114,8 +98,7 @@ Log into website and order robot
     Files to Table
     Creating a ZIP archive
     Close Browser
-    Check missing orders
-    Handle missing orders
+    User prompt feedback
     
     
    
